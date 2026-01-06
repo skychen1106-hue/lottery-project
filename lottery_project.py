@@ -2,34 +2,34 @@ import os
 import random
 from flask import Flask, render_template, jsonify, url_for
 
-# 這裡特別指定 template 和 static 的路徑
-base_dir = os.path.dirname(os.path.abspath(__file__))
-template_dir = os.path.join(base_dir, 'templates')
-static_dir = os.path.join(base_dir, 'static')
-
-app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # 檢查 index.html 是否真的在那裡，如果不在就噴出錯誤訊息給你看
-    html_path = os.path.join(template_dir, 'index.html')
-    if not os.path.exists(html_path):
-        return f"錯誤：找不到 index.html。預期路徑在: {html_path}"
+    # 檢查路徑的偵錯工具
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    template_path = os.path.join(base_path, 'templates', 'index.html')
+    
+    if not os.path.exists(template_path):
+        # 如果找不到網頁，直接在螢幕印出目前的目錄結構
+        files_in_root = os.listdir(base_path)
+        return f"ERROR: 找不到 index.html。<br>目前目錄位置: {base_path}<br>目錄下的檔案有: {files_in_root}"
+    
     return render_template('index.html')
 
 @app.route('/draw')
 def draw():
     try:
-        image_folder = os.path.join(static_dir, 'images')
+        base_path = os.path.dirname(os.path.abspath(__file__))
+        image_folder = os.path.join(base_path, 'static', 'images')
+        
         if not os.path.exists(image_folder):
-            return jsonify({"error": "找不到圖片資料夾"}), 404
-        
-        images = [f for f in os.listdir(image_folder) 
-                 if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
-        
+            return jsonify({"error": f"找不到圖片資料夾: {image_folder}"}), 404
+            
+        images = [f for f in os.listdir(image_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
         if not images:
-            return jsonify({"error": "images 內沒有圖"}), 404
-        
+            return jsonify({"error": "images 內沒圖片"}), 404
+            
         selected_image = random.choice(images)
         image_url = url_for('static', filename='images/' + selected_image)
         return jsonify({"image_url": image_url})
