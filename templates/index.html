@@ -5,40 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>天空紫微 x 線上求籤</title>
     <style>
-        /* 基本樣式設定 */
-        * { box-sizing: border-box; }
+        /* 全域樣式 */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
             text-align: center; 
-            font-family: "Microsoft JhengHei", sans-serif; 
+            font-family: "Microsoft JhengHei", "Apple LiGothic Medium", sans-serif; 
             background-color: #fdf5e6; 
             margin: 0; 
             padding: 0; 
-            overflow-x: hidden;
             color: #333;
         }
 
-        /* 頂部標題區 */
+        /* 標題區塊 */
         .header { 
-            padding: 50px 20px 20px; 
-            background: linear-gradient(to bottom, #8b0000, #a52a2a);
-            color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 60px 20px 30px; 
+            background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
+            color: #ffd700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        h1 { margin: 0; font-size: 28px; letter-spacing: 2px; }
-        p { margin: 10px 0 0; font-size: 16px; opacity: 0.9; }
+        h1 { margin: 0; font-size: 32px; letter-spacing: 3px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        p { margin: 15px 0 0; font-size: 18px; color: #fff; opacity: 0.9; }
 
-        /* 按鈕區 */
-        .btn-area { padding: 40px 20px; }
-        button { 
+        /* 按鈕區塊 */
+        .btn-area { padding: 50px 20px; }
+        
+        /* 這裡就是你缺少的按鈕樣式 */
+        #drawBtn { 
             width: 100%; 
-            max-width: 300px; 
-            font-size: 22px; 
-            padding: 15px; 
+            max-width: 280px; 
+            font-size: 24px; 
+            padding: 20px; 
             background-color: #8b0000; 
-            color: white; 
-            border: 2px solid #ffd700; 
-            border-radius: 50px; 
+            color: #ffd700; 
+            border: 3px solid #ffd700; 
+            border-radius: 15px; 
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.2s, background-color 0.
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transition: all 0.2
