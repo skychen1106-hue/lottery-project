@@ -3,31 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>天空紫微求籤</title>
+    <title>天空紫微 x 線上求籤</title>
     <style>
-        body { text-align: center; background-color: #fdf5e6; font-family: sans-serif; padding-top: 50px; }
-        .header { background-color: #8b0000; color: white; padding: 20px; margin-bottom: 30px; }
-        #drawBtn { 
-            font-size: 24px; padding: 15px 40px; 
-            background-color: #8b0000; color: gold; 
-            border: 2px solid gold; border-radius: 10px; cursor: pointer;
+        /* 基礎設定 */
+        body { 
+            text-align: center; 
+            background-color: #fdf5e6; 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            color: #333;
         }
-        #result-image { width: 90%; max-width: 500px; margin-top: 20px; display: none; border: 5px solid #8b0000; }
-        #loading { display: none; color: #8b0000; font-weight: bold; }
+
+        /* 標題區 */
+        .header { 
+            background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
+            color: #ffd700; 
+            padding: 40px 20px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        h1 { margin: 0; font-size: 28px; letter-spacing: 2px; }
+
+        /* 說明文字區塊 */
+        .info-container {
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+            padding: 0 20px;
+        }
+        .info-section {
+            background-color: #fff;
+            border-left: 5px solid #8b0000;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .info-section h2 {
+            font-size: 18px;
+            color: #8b0000;
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .info-section ol, .info-section ul {
+            padding-left: 20px;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        .info-section li { margin-bottom: 8px; }
+
+        /* 按鈕區 */
+        .btn-area { margin: 30px 0; }
+        #drawBtn { 
+            font-size: 22px; 
+            padding: 15px 50px; 
+            background-color: #8b0000; 
+            color: #ffd700; 
+            border: 2px solid #ffd700; 
+            border-radius: 50px; 
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+        }
+        #drawBtn:active { transform: scale(0.95); }
+        #drawBtn:disabled { background-color: #999; border-color: #ccc; }
+
+        /* 圖片區 */
+        #result-image { 
+            width: 95%; 
+            max-width: 500px; 
+            margin: 20px auto 50px; 
+            display: none; 
+            border: 8px solid #fff;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        #loading { display: none; color: #8b0000; font-weight: bold; margin: 20px; }
     </style>
 </head>
 <body>
+
     <div class="header">
         <h1>✨ 天空紫微 ✨</h1>
-        <p>心誠則靈</p>
     </div>
 
-    <button id="drawBtn">馬上求籤</button>
-    <p id="loading">正在請示神明...</p>
-    
-    <div id="image-container">
-        <img id="result-image" src="">
+    <div class="info-container">
+        <div class="info-section">
+            <h2>📜 抽牌前準備步驟</h2>
+            <ol>
+                <li><strong>清淨心神 (靜心/冥想)：</strong> 這是最關鍵的一步，深呼吸幾次，讓思緒平靜，排除雜念，進入專注狀態。</li>
+                <li><strong>聚焦問題：</strong> 清晰、具體地思考你想問的問題，例如「我這個月在工作上如何能更順利？」，而不是模糊的「我事業如何？」。</li>
+                <li><strong>抽牌：</strong> 在專注於問題的狀態下，按照感覺隨機抽出牌卡。</li>
+            </ol>
+        </div>
+
+        <div class="info-section">
+            <h2>⚠️ 抽牌禁忌與注意事項</h2>
+            <ul>
+                <li><strong>環境清淨：</strong> 避免在吵雜、干擾多的環境抽牌。</li>
+                <li><strong>一事不二問：</strong> 同一件事短期內不要重複問。</li>
+                <li><strong>不可問惡事：</strong> 不能問關於作惡或不道德的事。</li>
+                <li><strong>問近不問遠：</strong> 盡量問三個月內的短期問題。</li>
+                <li><strong>真心誠意：</strong> 不可嬉鬧，要以尊重和誠懇的態度面對。</li>
+            </ul>
+        </div>
     </div>
+
+    <div class="btn-area">
+        <button id="drawBtn">誠心求籤</button>
+        <p id="loading">正在請示神明...</p>
+    </div>
+    
+    <img id="result-image" src="">
 
     <script>
         document.getElementById('drawBtn').onclick = function() {
@@ -45,9 +134,11 @@
                     if(data.image_url) {
                         img.src = data.image_url + "?t=" + new Date().getTime();
                         img.onload = function() {
-                            img.style.display = 'inline-block';
+                            img.style.display = 'block';
                             loading.style.display = 'none';
                             btn.disabled = false;
+                            // 自動捲動到結果圖片
+                            img.scrollIntoView({ behavior: 'smooth' });
                         };
                     } else {
                         alert("錯誤: " + data.error);
