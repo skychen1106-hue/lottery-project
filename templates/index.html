@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>天空紫微 x 線上求籤</title>
+    <style>
+        /* 1. 移除所有預設邊距，實現滿版 */
+        * { box-sizing: border-box; }
+        body { 
+            text-align: center; 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            background-color: #f4f1ea; 
+            margin: 0; 
+            padding: 0; /* 移除邊距 */
+            overflow-x: hidden; /* 防止左右滑動 */
+        }
+
+        /* 2. 標題區塊調整 */
+        .header-section {
+            padding: 40px 10px 20px 10px;
+        }
+        h1 { 
+            color: #8b0000; 
+            font-size: 36px; /* 標題超大 */
+            margin: 0;
+            letter-spacing: 3px;
+        }
+        p { font-size: 20px; color: #666; margin: 10px 0; }
+
+        /* 3. 按鈕加大加寬 */
+        .button-container {
+            padding: 20px;
+        }
+        button { 
+            width: 90%; /* 按鈕佔據 90% 寬度 */
+            max-width: 400px;
+            font-size: 28px; 
+            padding: 20px; 
+            cursor: pointer; 
+            background-color: #8b0000; 
+            color: white; 
+            border: none; 
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* 4. 圖片滿版區塊 */
+        #image-container {
