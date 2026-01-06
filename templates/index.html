@@ -10,38 +10,40 @@
             height: 100%; 
             margin: 0; 
             padding: 0; 
-            overflow: hidden; /* 禁止上下滑動 */
+            overflow: hidden; 
             background-color: #fdf5e6;
             font-family: "Microsoft JhengHei", sans-serif;
             display: flex;
             flex-direction: column;
         }
 
-        /* 縮小後的標題區 */
+        /* 置中標題區 */
         .header { 
             background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
             color: #ffd700; 
-            padding: 15px 0; /* 縮小高度 */
+            padding: 15px 0;
             flex-shrink: 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            text-align: center; /* 標題置中 */
+            width: 100%;
         }
         h1 { margin: 0; font-size: 22px; letter-spacing: 2px; }
 
-        /* 主要內容容器：自動撐開 */
+        /* 主要內容容器：垂直水平皆置中 */
         .main-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            position: relative;
+            justify-content: center; /* 垂直置中 */
+            align-items: center;     /* 水平置中 */
+            padding: 15px;
+            width: 100%;
         }
 
         /* 說明文字區塊 */
         #instructions {
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             text-align: left;
             font-size: 14px;
             line-height: 1.5;
@@ -50,15 +52,21 @@
             background-color: #fff;
             border-left: 4px solid #8b0000;
             padding: 10px 15px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .info-section h2 { font-size: 16px; color: #8b0000; margin: 0 0 5px 0; }
+        .info-section h2 { font-size: 16px; color: #8b0000; margin: 0 0 8px 0; border-bottom: 1px solid #eee; padding-bottom: 3px; }
         .info-section ul, .info-section ol { padding-left: 20px; margin: 0; }
-        .info-section li { margin-bottom: 3px; }
+        .info-section li { margin-bottom: 5px; }
 
-        /* 按鈕區 */
-        .btn-area { flex-shrink: 0; padding-bottom: 20px; }
+        /* 置中按鈕區 */
+        .btn-area { 
+            flex-shrink: 0; 
+            padding: 20px 0; 
+            width: 100%; 
+            text-align: center; /* 按鈕水平置中 */
+        }
         #drawBtn { 
             font-size: 20px; 
             padding: 12px 60px; 
@@ -69,14 +77,16 @@
             cursor: pointer;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: 0.2s;
         }
+        #drawBtn:active { transform: scale(0.95); }
 
-        /* 圖片顯示區：抽籤後會撐滿中間 */
+        /* 圖片顯示區：最大化利用剩餘空間 */
         #result-image { 
             max-width: 100%;
-            max-height: 70vh; /* 限制最高為螢幕高度的 70% */
+            max-height: 75vh; 
             display: none; 
-            border: 5px solid #fff;
+            border: 4px solid #fff;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             border-radius: 8px;
             object-fit: contain;
@@ -94,18 +104,21 @@
     <div class="main-content">
         <div id="instructions">
             <div class="info-section">
-                <h2>📜 準備步驟</h2>
+                <h2>📜 抽牌前準備步驟</h2>
                 <ol>
-                    <li>清淨心神，深呼吸進入專注狀態。</li>
-                    <li>聚焦清晰、具體的問題。</li>
-                    <li>按感覺隨機抽出牌卡。</li>
+                    <li><strong>清淨心神 (靜心/冥想)：</strong>深呼吸幾次，讓思緒平靜，排除雜念，進入專注狀態。</li>
+                    <li><strong>聚焦問題：</strong>清晰、具體地思考你想問的問題，例如「我這個月在工作上如何能更順利？」。</li>
+                    <li><strong>抽牌：</strong>在專注於問題的狀態下，按照感覺隨機抽出牌卡。</li>
                 </ol>
             </div>
             <div class="info-section">
-                <h2>⚠️ 禁忌說明</h2>
+                <h2>⚠️ 抽牌禁忌與注意事項</h2>
                 <ul>
-                    <li>一事不二問、不可問惡事。</li>
-                    <li>環境清淨，真心誠意不可嬉鬧。</li>
+                    <li><strong>環境清淨：</strong>避免在吵雜、干擾多的環境抽牌。</li>
+                    <li><strong>一事不二問：</strong>同一件事短期內不要重複問。</li>
+                    <li><strong>不可問惡事：</strong>不能問關於作惡或不道德的事。</li>
+                    <li><strong>問近不問遠：</strong>盡量問三個月內的短期問題。</li>
+                    <li><strong>真心誠意：</strong>不可嬉鬧，要以尊重和誠懇的態度面對。</li>
                 </ul>
             </div>
         </div>
@@ -134,9 +147,10 @@
                     if(data.image_url) {
                         img.src = data.image_url + "?t=" + new Date().getTime();
                         img.onload = function() {
-                            // --- 關鍵動作：隱藏說明，顯示圖片 ---
+                            // 隱藏說明與載入中
                             instructions.style.display = 'none'; 
                             loading.style.display = 'none';
+                            // 顯示圖片
                             img.style.display = 'block';
                             
                             btn.disabled = false;
