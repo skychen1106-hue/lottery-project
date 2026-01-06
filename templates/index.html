@@ -2,44 +2,63 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>天空紫微 x 線上求籤</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天空紫微求籤</title>
     <style>
-        /* 全域樣式 */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            text-align: center; 
-            font-family: "Microsoft JhengHei", "Apple LiGothic Medium", sans-serif; 
-            background-color: #fdf5e6; 
-            margin: 0; 
-            padding: 0; 
-            color: #333;
-        }
-
-        /* 標題區塊 */
-        .header { 
-            padding: 60px 20px 30px; 
-            background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
-            color: #ffd700;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        h1 { margin: 0; font-size: 32px; letter-spacing: 3px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        p { margin: 15px 0 0; font-size: 18px; color: #fff; opacity: 0.9; }
-
-        /* 按鈕區塊 */
-        .btn-area { padding: 50px 20px; }
-        
-        /* 這裡就是你缺少的按鈕樣式 */
+        body { text-align: center; background-color: #fdf5e6; font-family: sans-serif; padding-top: 50px; }
+        .header { background-color: #8b0000; color: white; padding: 20px; margin-bottom: 30px; }
         #drawBtn { 
-            width: 100%; 
-            max-width: 280px; 
-            font-size: 24px; 
-            padding: 20px; 
-            background-color: #8b0000; 
-            color: #ffd700; 
-            border: 3px solid #ffd700; 
-            border-radius: 15px; 
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            transition: all 0.2
+            font-size: 24px; padding: 15px 40px; 
+            background-color: #8b0000; color: gold; 
+            border: 2px solid gold; border-radius: 10px; cursor: pointer;
+        }
+        #result-image { width: 90%; max-width: 500px; margin-top: 20px; display: none; border: 5px solid #8b0000; }
+        #loading { display: none; color: #8b0000; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>✨ 天空紫微 ✨</h1>
+        <p>心誠則靈</p>
+    </div>
+
+    <button id="drawBtn">馬上求籤</button>
+    <p id="loading">正在請示神明...</p>
+    
+    <div id="image-container">
+        <img id="result-image" src="">
+    </div>
+
+    <script>
+        document.getElementById('drawBtn').onclick = function() {
+            const btn = this;
+            const img = document.getElementById('result-image');
+            const loading = document.getElementById('loading');
+            
+            btn.disabled = true;
+            loading.style.display = 'block';
+            img.style.display = 'none';
+
+            fetch('/draw')
+                .then(res => res.json())
+                .then(data => {
+                    if(data.image_url) {
+                        img.src = data.image_url + "?t=" + new Date().getTime();
+                        img.onload = function() {
+                            img.style.display = 'inline-block';
+                            loading.style.display = 'none';
+                            btn.disabled = false;
+                        };
+                    } else {
+                        alert("錯誤: " + data.error);
+                        btn.disabled = false;
+                    }
+                })
+                .catch(err => {
+                    alert("連線失敗");
+                    btn.disabled = false;
+                });
+        };
+    </script>
+</body>
+</html>
