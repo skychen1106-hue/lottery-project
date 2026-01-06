@@ -2,85 +2,87 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>天空紫微 x 線上求籤</title>
     <style>
-        /* 基礎設定 */
-        body { 
-            text-align: center; 
-            background-color: #fdf5e6; 
-            font-family: "Microsoft JhengHei", sans-serif; 
+        /* 強制滿版且禁止溢出 */
+        html, body { 
+            height: 100%; 
             margin: 0; 
             padding: 0; 
-            color: #333;
+            overflow: hidden; /* 禁止上下滑動 */
+            background-color: #fdf5e6;
+            font-family: "Microsoft JhengHei", sans-serif;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* 標題區 */
+        /* 縮小後的標題區 */
         .header { 
             background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
             color: #ffd700; 
-            padding: 40px 20px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            padding: 15px 0; /* 縮小高度 */
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        h1 { margin: 0; font-size: 28px; letter-spacing: 2px; }
+        h1 { margin: 0; font-size: 22px; letter-spacing: 2px; }
+
+        /* 主要內容容器：自動撐開 */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            position: relative;
+        }
 
         /* 說明文字區塊 */
-        .info-container {
-            max-width: 600px;
-            margin: 20px auto;
+        #instructions {
+            width: 100%;
+            max-width: 400px;
             text-align: left;
-            padding: 0 20px;
+            font-size: 14px;
+            line-height: 1.5;
         }
         .info-section {
             background-color: #fff;
-            border-left: 5px solid #8b0000;
-            padding: 15px;
-            margin-bottom: 20px;
+            border-left: 4px solid #8b0000;
+            padding: 10px 15px;
+            margin-bottom: 10px;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .info-section h2 {
-            font-size: 18px;
-            color: #8b0000;
-            margin-top: 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
-        }
-        .info-section ol, .info-section ul {
-            padding-left: 20px;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-        .info-section li { margin-bottom: 8px; }
+        .info-section h2 { font-size: 16px; color: #8b0000; margin: 0 0 5px 0; }
+        .info-section ul, .info-section ol { padding-left: 20px; margin: 0; }
+        .info-section li { margin-bottom: 3px; }
 
         /* 按鈕區 */
-        .btn-area { margin: 30px 0; }
+        .btn-area { flex-shrink: 0; padding-bottom: 20px; }
         #drawBtn { 
-            font-size: 22px; 
-            padding: 15px 50px; 
+            font-size: 20px; 
+            padding: 12px 60px; 
             background-color: #8b0000; 
             color: #ffd700; 
             border: 2px solid #ffd700; 
             border-radius: 50px; 
             cursor: pointer;
             font-weight: bold;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        #drawBtn:active { transform: scale(0.95); }
-        #drawBtn:disabled { background-color: #999; border-color: #ccc; }
 
-        /* 圖片區 */
+        /* 圖片顯示區：抽籤後會撐滿中間 */
         #result-image { 
-            width: 95%; 
-            max-width: 500px; 
-            margin: 20px auto 50px; 
+            max-width: 100%;
+            max-height: 70vh; /* 限制最高為螢幕高度的 70% */
             display: none; 
-            border: 8px solid #fff;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            border-radius: 10px;
+            border: 5px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            object-fit: contain;
         }
-        #loading { display: none; color: #8b0000; font-weight: bold; margin: 20px; }
+
+        #loading { display: none; color: #8b0000; font-weight: bold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -89,56 +91,56 @@
         <h1>✨ 天空紫微 ✨</h1>
     </div>
 
-    <div class="info-container">
-        <div class="info-section">
-            <h2>📜 抽牌前準備步驟</h2>
-            <ol>
-                <li><strong>清淨心神 (靜心/冥想)：</strong> 這是最關鍵的一步，深呼吸幾次，讓思緒平靜，排除雜念，進入專注狀態。</li>
-                <li><strong>聚焦問題：</strong> 清晰、具體地思考你想問的問題，例如「我這個月在工作上如何能更順利？」，而不是模糊的「我事業如何？」。</li>
-                <li><strong>抽牌：</strong> 在專注於問題的狀態下，按照感覺隨機抽出牌卡。</li>
-            </ol>
+    <div class="main-content">
+        <div id="instructions">
+            <div class="info-section">
+                <h2>📜 準備步驟</h2>
+                <ol>
+                    <li>清淨心神，深呼吸進入專注狀態。</li>
+                    <li>聚焦清晰、具體的問題。</li>
+                    <li>按感覺隨機抽出牌卡。</li>
+                </ol>
+            </div>
+            <div class="info-section">
+                <h2>⚠️ 禁忌說明</h2>
+                <ul>
+                    <li>一事不二問、不可問惡事。</li>
+                    <li>環境清淨，真心誠意不可嬉鬧。</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="info-section">
-            <h2>⚠️ 抽牌禁忌與注意事項</h2>
-            <ul>
-                <li><strong>環境清淨：</strong> 避免在吵雜、干擾多的環境抽牌。</li>
-                <li><strong>一事不二問：</strong> 同一件事短期內不要重複問。</li>
-                <li><strong>不可問惡事：</strong> 不能問關於作惡或不道德的事。</li>
-                <li><strong>問近不問遠：</strong> 盡量問三個月內的短期問題。</li>
-                <li><strong>真心誠意：</strong> 不可嬉鬧，要以尊重和誠懇的態度面對。</li>
-            </ul>
-        </div>
+        <p id="loading">正在請示神明...</p>
+        <img id="result-image" src="">
     </div>
 
     <div class="btn-area">
         <button id="drawBtn">誠心求籤</button>
-        <p id="loading">正在請示神明...</p>
     </div>
-    
-    <img id="result-image" src="">
 
     <script>
         document.getElementById('drawBtn').onclick = function() {
             const btn = this;
             const img = document.getElementById('result-image');
             const loading = document.getElementById('loading');
+            const instructions = document.getElementById('instructions');
             
             btn.disabled = true;
             loading.style.display = 'block';
-            img.style.display = 'none';
-
+            
             fetch('/draw')
                 .then(res => res.json())
                 .then(data => {
                     if(data.image_url) {
                         img.src = data.image_url + "?t=" + new Date().getTime();
                         img.onload = function() {
-                            img.style.display = 'block';
+                            // --- 關鍵動作：隱藏說明，顯示圖片 ---
+                            instructions.style.display = 'none'; 
                             loading.style.display = 'none';
+                            img.style.display = 'block';
+                            
                             btn.disabled = false;
-                            // 自動捲動到結果圖片
-                            img.scrollIntoView({ behavior: 'smooth' });
+                            btn.innerText = '再次求籤';
                         };
                     } else {
                         alert("錯誤: " + data.error);
