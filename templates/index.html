@@ -5,46 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>天空紫微 x 線上求籤</title>
     <style>
-        /* 1. 移除所有預設邊距，實現滿版 */
+        /* 基本樣式設定 */
         * { box-sizing: border-box; }
         body { 
             text-align: center; 
             font-family: "Microsoft JhengHei", sans-serif; 
-            background-color: #f4f1ea; 
+            background-color: #fdf5e6; 
             margin: 0; 
-            padding: 0; /* 移除邊距 */
-            overflow-x: hidden; /* 防止左右滑動 */
+            padding: 0; 
+            overflow-x: hidden;
+            color: #333;
         }
 
-        /* 2. 標題區塊調整 */
-        .header-section {
-            padding: 40px 10px 20px 10px;
+        /* 頂部標題區 */
+        .header { 
+            padding: 50px 20px 20px; 
+            background: linear-gradient(to bottom, #8b0000, #a52a2a);
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        h1 { 
-            color: #8b0000; 
-            font-size: 36px; /* 標題超大 */
-            margin: 0;
-            letter-spacing: 3px;
-        }
-        p { font-size: 20px; color: #666; margin: 10px 0; }
+        h1 { margin: 0; font-size: 28px; letter-spacing: 2px; }
+        p { margin: 10px 0 0; font-size: 16px; opacity: 0.9; }
 
-        /* 3. 按鈕加大加寬 */
-        .button-container {
-            padding: 20px;
-        }
+        /* 按鈕區 */
+        .btn-area { padding: 40px 20px; }
         button { 
-            width: 90%; /* 按鈕佔據 90% 寬度 */
-            max-width: 400px;
-            font-size: 28px; 
-            padding: 20px; 
-            cursor: pointer; 
+            width: 100%; 
+            max-width: 300px; 
+            font-size: 22px; 
+            padding: 15px; 
             background-color: #8b0000; 
             color: white; 
-            border: none; 
-            border-radius: 10px;
+            border: 2px solid #ffd700; 
+            border-radius: 50px; 
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        /* 4. 圖片滿版區塊 */
-        #image-container {
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background-color 0.
